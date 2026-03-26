@@ -1,0 +1,1732 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MS-Club+ | Votre univers 100% fun</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12121a;
+    --surface2: #1a1a26;
+    --accent: #7c5cfc;
+    --accent2: #fc5ca0;
+    --accent3: #5cf4fc;
+    --text: #f0eeff;
+    --muted: #8882aa;
+    --border: rgba(124,92,252,0.2);
+    --glow: 0 0 40px rgba(124,92,252,0.3);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ─── ANIMATED BACKGROUND ─── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 20% 20%, rgba(124,92,252,0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 40% at 80% 80%, rgba(252,92,160,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 60% at 60% 10%, rgba(92,244,252,0.06) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    background: rgba(10,10,15,0.85);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+  }
+
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.4rem;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-decoration: none;
+    letter-spacing: -0.5px;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 0.25rem;
+    list-style: none;
+    align-items: center;
+  }
+
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.88rem;
+    font-weight: 500;
+    padding: 0.4rem 0.85rem;
+    border-radius: 8px;
+    transition: all 0.2s;
+  }
+
+  .nav-links a:hover, .nav-links a.active {
+    color: var(--text);
+    background: rgba(124,92,252,0.15);
+  }
+
+  .nav-telegram {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: white !important;
+    padding: 0.4rem 1rem !important;
+    border-radius: 20px !important;
+  }
+
+  .nav-telegram:hover { opacity: 0.85; transform: scale(1.03); }
+
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 4px;
+  }
+  .hamburger span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--text);
+    border-radius: 2px;
+    transition: all 0.3s;
+  }
+
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    top: 64px;
+    left: 0; right: 0;
+    background: rgba(10,10,15,0.97);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 1rem 2rem;
+    z-index: 99;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a {
+    color: var(--muted);
+    text-decoration: none;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.2s;
+  }
+  .mobile-menu a:hover { color: var(--text); background: rgba(124,92,252,0.15); }
+
+  /* ─── SECTIONS ─── */
+  .page { display: none; padding-top: 64px; min-height: 100vh; position: relative; z-index: 1; }
+  .page.active { display: block; }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: calc(100vh - 64px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 4rem 2rem 2rem;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(124,92,252,0.1);
+    border: 1px solid var(--border);
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    font-size: 0.82rem;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 2rem;
+    animation: fadeInDown 0.8s ease both;
+  }
+
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(3rem, 9vw, 7rem);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -3px;
+    margin-bottom: 1.5rem;
+    animation: fadeInUp 0.8s ease 0.1s both;
+  }
+
+  .hero h1 span {
+    background: linear-gradient(135deg, var(--accent), var(--accent2), var(--accent3));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .hero-sub {
+    max-width: 520px;
+    color: var(--muted);
+    font-size: 1.05rem;
+    margin-bottom: 2.5rem;
+    animation: fadeInUp 0.8s ease 0.2s both;
+  }
+
+  .hero-ctas {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    animation: fadeInUp 0.8s ease 0.3s both;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.75rem;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.25s;
+    border: none;
+    font-family: inherit;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: white;
+    box-shadow: 0 4px 20px rgba(124,92,252,0.4);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(124,92,252,0.5); }
+
+  .btn-ghost {
+    background: rgba(255,255,255,0.05);
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+  .btn-ghost:hover { background: rgba(255,255,255,0.1); transform: translateY(-2px); }
+
+  /* Hero image strip */
+  .hero-images {
+    display: flex;
+    gap: 1rem;
+    margin-top: 3rem;
+    overflow: hidden;
+    animation: fadeInUp 0.8s ease 0.4s both;
+  }
+  .hero-images img {
+    width: 160px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 12px;
+    opacity: 0.6;
+    filter: saturate(0.7);
+    transition: all 0.3s;
+  }
+  .hero-images img:hover { opacity: 1; filter: saturate(1); transform: scale(1.05); }
+
+  /* ─── ALERT BAND ─── */
+  .alert-band {
+    background: linear-gradient(135deg, rgba(124,92,252,0.15), rgba(252,92,160,0.1));
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.25rem 1.75rem;
+    margin: 2rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  .alert-band .icon { font-size: 1.5rem; flex-shrink: 0; }
+  .alert-band p { color: var(--muted); font-size: 0.9rem; }
+  .alert-band strong { color: var(--text); }
+
+  /* ─── SECTION LAYOUT ─── */
+  .section {
+    padding: 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.5px;
+  }
+  .section-title span { color: var(--accent); }
+
+  .section-divider {
+    width: 48px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 2px;
+    margin-bottom: 2rem;
+  }
+
+  /* ─── CARDS ─── */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem;
+    transition: all 0.3s;
+    cursor: default;
+  }
+  .card:hover {
+    border-color: rgba(124,92,252,0.5);
+    box-shadow: var(--glow);
+    transform: translateY(-4px);
+  }
+
+  .card-tag {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--accent);
+    margin-bottom: 0.75rem;
+  }
+  .card h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  .card p { color: var(--muted); font-size: 0.9rem; line-height: 1.5; }
+
+  .card-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    margin-top: 1rem;
+    color: var(--accent);
+    font-size: 0.88rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: gap 0.2s;
+  }
+  .card-link:hover { gap: 0.6rem; }
+
+  /* ─── BLOG ─── */
+  .blog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .blog-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.3s;
+  }
+  .blog-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--glow);
+    border-color: rgba(124,92,252,0.4);
+  }
+
+  .blog-card-body { padding: 1.25rem; }
+  .blog-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+  }
+  .blog-card p { color: var(--muted); font-size: 0.88rem; }
+
+  /* ─── RATING ─── */
+  .rating-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    text-align: center;
+    max-width: 400px;
+  }
+
+  .stars-display { font-size: 2rem; letter-spacing: 4px; margin-bottom: 0.5rem; }
+
+  .star-rating { display: flex; justify-content: center; gap: 0.5rem; margin: 1rem 0; }
+  .star-btn {
+    font-size: 2rem;
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: var(--surface2);
+    transition: all 0.15s;
+  }
+  .star-btn:hover, .star-btn.active { color: #fbbf24; transform: scale(1.2); }
+
+  .rating-count { color: var(--muted); font-size: 0.85rem; }
+
+  /* ─── APP PAGE ─── */
+  .app-hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+    padding: 3rem 2rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  @media (max-width: 640px) { .app-hero { grid-template-columns: 1fr; text-align: center; } }
+
+  .app-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 8px 30px rgba(124,92,252,0.4);
+  }
+
+  .app-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin-bottom: 1rem;
+  }
+  .feature-list { list-style: none; margin: 1.5rem 0; }
+  .feature-list li {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0;
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+  .feature-list li::before {
+    content: '✓';
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+  }
+
+  .app-mockup {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 1.5rem;
+    aspect-ratio: 9/16;
+    max-width: 240px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .app-mockup::before {
+    content: '';
+    position: absolute;
+    top: -30%;
+    left: -30%;
+    width: 80%;
+    height: 80%;
+    background: radial-gradient(circle, rgba(124,92,252,0.2) 0%, transparent 60%);
+  }
+  .mock-header {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-align: center;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .mock-msg {
+    padding: 0.6rem 0.9rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    max-width: 80%;
+  }
+  .mock-msg.sent { background: var(--accent); margin-left: auto; }
+  .mock-msg.recv { background: var(--surface2); }
+
+  /* ─── MUSIC PAGE ─── */
+  .music-player {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 2rem;
+    max-width: 400px;
+    margin: 2rem auto;
+  }
+  .player-cover {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2), var(--accent3));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 5rem;
+    margin-bottom: 1.5rem;
+  }
+  .player-title { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 700; }
+  .player-artist { color: var(--muted); font-size: 0.9rem; margin-bottom: 1.5rem; }
+  .player-progress { height: 4px; background: var(--surface2); border-radius: 2px; margin-bottom: 1rem; position: relative; cursor: pointer; }
+  .player-progress-bar { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 2px; width: 35%; transition: width 0.5s linear; }
+  .player-times { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--muted); margin-bottom: 1.5rem; }
+  .player-controls { display: flex; justify-content: center; align-items: center; gap: 1.5rem; }
+  .ctrl-btn {
+    background: none; border: none; color: var(--muted); font-size: 1.5rem; cursor: pointer; transition: all 0.2s;
+  }
+  .ctrl-btn:hover { color: var(--text); transform: scale(1.1); }
+  .ctrl-play {
+    width: 56px; height: 56px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border: none; color: white; font-size: 1.3rem; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 20px rgba(124,92,252,0.4); transition: all 0.2s;
+  }
+  .ctrl-play:hover { transform: scale(1.1); }
+
+  .music-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1rem;
+    padding: 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .track-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .track-card:hover { background: var(--surface2); border-color: rgba(124,92,252,0.4); transform: translateX(4px); }
+  .track-cover {
+    width: 48px; height: 48px; border-radius: 8px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center; font-size: 1.5rem;
+  }
+  .track-info .track-name { font-weight: 600; font-size: 0.9rem; margin-bottom: 0.2rem; }
+  .track-info .track-artist { color: var(--muted); font-size: 0.8rem; }
+
+  /* ─── GAMES PAGE ─── */
+  .games-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.25rem;
+  }
+  .game-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+  .game-card:hover { transform: translateY(-4px); box-shadow: var(--glow); border-color: rgba(124,92,252,0.4); }
+  .game-thumb {
+    height: 130px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+  }
+  .game-info { padding: 1rem 1.25rem 1.25rem; }
+  .game-info h3 { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; margin-bottom: 0.3rem; }
+  .game-info p { color: var(--muted); font-size: 0.82rem; margin-bottom: 0.75rem; }
+  .game-tag {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 0.25rem 0.65rem;
+    border-radius: 6px;
+    background: rgba(124,92,252,0.15);
+    color: var(--accent);
+  }
+
+  /* ─── NEWS PAGE ─── */
+  .news-feed { max-width: 700px; margin: 0 auto; display: flex; flex-direction: column; gap: 1rem; }
+  .news-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem;
+    transition: all 0.2s;
+  }
+  .news-item:hover { border-color: rgba(124,92,252,0.4); }
+  .news-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+  .news-date { font-size: 0.78rem; color: var(--muted); }
+  .news-cat {
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 0.2rem 0.6rem;
+    border-radius: 6px;
+  }
+  .cat-tech { background: rgba(92,244,252,0.15); color: var(--accent3); }
+  .cat-game { background: rgba(252,92,160,0.15); color: var(--accent2); }
+  .cat-app { background: rgba(124,92,252,0.15); color: var(--accent); }
+  .news-item h3 { font-family: 'Syne', sans-serif; font-weight: 700; margin-bottom: 0.5rem; font-size: 1.05rem; }
+  .news-item p { color: var(--muted); font-size: 0.9rem; line-height: 1.5; }
+
+  /* ─── BETA PAGE ─── */
+  .beta-hero {
+    text-align: center;
+    padding: 4rem 2rem;
+  }
+  .beta-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    padding: 0.3rem 1rem;
+    border-radius: 20px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 1.5rem;
+  }
+  .beta-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.25rem;
+    padding: 0 2rem 3rem;
+  }
+  .beta-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.75rem;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s;
+  }
+  .beta-card::after {
+    content: 'BIENTÔT';
+    position: absolute;
+    top: 1rem; right: -1.5rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 0.25rem 2rem;
+    transform: rotate(30deg);
+  }
+  .beta-card:hover { border-color: rgba(124,92,252,0.4); transform: translateY(-4px); box-shadow: var(--glow); }
+  .beta-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+  .beta-card h3 { font-family: 'Syne', sans-serif; font-weight: 700; margin-bottom: 0.5rem; }
+  .beta-card p { color: var(--muted); font-size: 0.9rem; }
+
+  /* ─── SOCIAL LINKS ─── */
+  .social-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+  }
+  .social-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.25rem;
+    border-radius: 10px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    text-decoration: none;
+    font-size: 0.88rem;
+    font-weight: 500;
+    transition: all 0.2s;
+  }
+  .social-btn:hover { background: rgba(124,92,252,0.15); border-color: rgba(124,92,252,0.4); transform: translateY(-2px); }
+
+  /* ─── COMMENTS ─── */
+  .comments-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    margin: 2rem;
+    max-width: 700px;
+  }
+
+  .comment {
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .comment:last-child { border-bottom: none; }
+  .comment-author { font-weight: 600; font-size: 0.9rem; margin-bottom: 0.25rem; }
+  .comment-meta { color: var(--muted); font-size: 0.78rem; margin-bottom: 0.5rem; }
+  .comment-text { color: var(--muted); font-size: 0.9rem; }
+
+  .comment-form { display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1.5rem; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+  @media (max-width: 480px) { .form-row { grid-template-columns: 1fr; } }
+  .form-input {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 0.9rem;
+    transition: border-color 0.2s;
+    outline: none;
+  }
+  .form-input:focus { border-color: var(--accent); }
+  .form-input::placeholder { color: var(--muted); }
+  textarea.form-input { resize: vertical; min-height: 100px; }
+
+  /* ─── FOOTER ─── */
+  footer {
+    position: relative;
+    z-index: 1;
+    border-top: 1px solid var(--border);
+    padding: 3rem 2rem 2rem;
+    margin-top: 4rem;
+    background: rgba(10,10,15,0.8);
+  }
+
+  .footer-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 3rem;
+  }
+  @media (max-width: 700px) { .footer-inner { grid-template-columns: 1fr; gap: 2rem; } }
+
+  .footer-brand .logo { font-family: 'Syne', sans-serif; font-size: 1.4rem; font-weight: 800; background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 0.75rem; }
+  .footer-brand p { color: var(--muted); font-size: 0.88rem; line-height: 1.6; max-width: 280px; }
+  .footer-col h4 { font-family: 'Syne', sans-serif; font-size: 0.9rem; font-weight: 700; margin-bottom: 1rem; }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+  .footer-col ul a { color: var(--muted); text-decoration: none; font-size: 0.88rem; transition: color 0.2s; }
+  .footer-col ul a:hover { color: var(--accent); }
+
+  .footer-bottom {
+    max-width: 1100px;
+    margin: 2rem auto 0;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    color: var(--muted);
+    font-size: 0.82rem;
+  }
+
+  /* ─── TOAST ─── */
+  .toast {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    font-size: 0.9rem;
+    z-index: 1000;
+    transform: translateY(100px);
+    opacity: 0;
+    transition: all 0.3s;
+    max-width: 300px;
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast.success { border-color: rgba(92,244,252,0.4); }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+  }
+
+  .separator { height: 1px; background: var(--border); margin: 2rem; }
+
+  .important-notice {
+    background: linear-gradient(135deg, rgba(252,92,160,0.1), rgba(124,92,252,0.1));
+    border: 1px solid rgba(252,92,160,0.3);
+    border-radius: 16px;
+    padding: 2rem;
+    margin: 2rem;
+    text-align: center;
+  }
+  .important-notice h2 { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 800; margin-bottom: 0.75rem; color: var(--accent2); }
+  .important-notice p { color: var(--muted); font-size: 0.92rem; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo" onclick="navigate('accueil')">MS-Club+</a>
+  <ul class="nav-links">
+    <li><a href="#" class="active" onclick="navigate('accueil')">Accueil</a></li>
+    <li><a href="#" onclick="navigate('app')">Notre Application</a></li>
+    <li><a href="#" onclick="navigate('musique')">Musique</a></li>
+    <li><a href="#" onclick="navigate('jeux')">Jeux</a></li>
+    <li><a href="#" onclick="navigate('news')">Nouveautés</a></li>
+    <li><a href="#" onclick="navigate('beta')">À suivre (BETA)</a></li>
+    <li><a href="https://t.me/+DPgrnnhdIG1iYWZk" class="nav-telegram" target="_blank">💬 Telegram</a></li>
+  </ul>
+  <div class="hamburger" onclick="toggleMenu()" id="hamburger">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#" onclick="navigate('accueil')">🏠 Accueil</a>
+  <a href="#" onclick="navigate('app')">📱 Notre Application</a>
+  <a href="#" onclick="navigate('musique')">🎵 Musique</a>
+  <a href="#" onclick="navigate('jeux')">🎮 Jeux</a>
+  <a href="#" onclick="navigate('news')">📰 Nouveautés</a>
+  <a href="#" onclick="navigate('beta')">🔬 À suivre (BETA)</a>
+  <a href="https://t.me/+DPgrnnhdIG1iYWZk" target="_blank">💬 Telegram</a>
+</div>
+
+<!-- ═══════════════════════ PAGE: ACCUEIL ═══════════════════════ -->
+<div class="page active" id="page-accueil">
+
+  <div class="hero">
+    <div class="hero-badge">✨ Bienvenue sur MS-Club+</div>
+    <h1>Bien plus qu'une<br><span>plateforme</span></h1>
+    <p class="hero-sub">Votre univers 100% fun, détente et découvertes. Rejoignez la communauté, explorez, amusez-vous.</p>
+    <div class="hero-ctas">
+      <a href="http://www.appcreator24.com/app3103523-xceqi6" class="btn btn-primary" target="_blank">📱 Télécharger MS-Chat+</a>
+      <a href="https://t.me/+DPgrnnhdIG1iYWZk" class="btn btn-ghost" target="_blank">💬 Rejoindre Telegram</a>
+    </div>
+    <div class="hero-images">
+      <img src="https://images.pexels.com/photos/10422641/pexels-photo-10422641.jpeg?w=300" alt="">
+      <img src="https://images.pexels.com/photos/5605061/pexels-photo-5605061.jpeg?w=300" alt="">
+      <img src="https://images.pexels.com/photos/206290/pexels-photo-206290.jpeg?w=300" alt="">
+    </div>
+  </div>
+
+  <div class="section">
+    <p class="section-title">📊 Votre <span>avis</span> compte</p>
+    <div class="section-divider"></div>
+    <div class="rating-box">
+      <div class="stars-display" id="starsDisplay">⭐⭐⭐⭐⭐</div>
+      <div id="ratingLabel" style="font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:0.25rem">4.4 / 5</div>
+      <div class="rating-count" id="voteCount">58 votes</div>
+      <div class="star-rating" id="starRating">
+        <button class="star-btn" data-v="1" onclick="vote(1)">★</button>
+        <button class="star-btn" data-v="2" onclick="vote(2)">★</button>
+        <button class="star-btn" data-v="3" onclick="vote(3)">★</button>
+        <button class="star-btn" data-v="4" onclick="vote(4)">★</button>
+        <button class="star-btn" data-v="5" onclick="vote(5)">★</button>
+      </div>
+      <p id="voteMsg" style="font-size:0.82rem;color:var(--muted);min-height:1.2rem"></p>
+    </div>
+  </div>
+
+  <!-- BLOG -->
+  <div class="section">
+    <p class="section-title">📝 <span>Blog</span></p>
+    <div class="section-divider"></div>
+    <div class="blog-grid">
+
+      <div class="blog-card" onclick="openBlogModal('b1')">
+        <div class="blog-card-body">
+          <div class="card-tag">🍎 Apple</div>
+          <h3>iPhone 17 : le 120Hz enfin pour tous !</h3>
+          <p>Apple a sorti l'iPhone 17 en septembre 2025 avec la technologie ProMotion 1-120 Hz sur le modèle standard. Une première !</p>
+          <span class="card-link">Lire l'article →</span>
+        </div>
+      </div>
+
+      <div class="blog-card" onclick="openBlogModal('b2')">
+        <div class="blog-card-body">
+          <div class="card-tag">🤖 Samsung</div>
+          <h3>Galaxy S26 Ultra : la révolution IA</h3>
+          <p>Le Galaxy S26 Ultra arrive avec Galaxy AI boosté, Wi-Fi 7, Bluetooth 6.0 et 7 ans de mises à jour garanties.</p>
+          <span class="card-link">Lire l'article →</span>
+        </div>
+      </div>
+
+      <div class="blog-card" onclick="openBlogModal('b3')">
+        <div class="blog-card-body">
+          <div class="card-tag">🪟 Windows</div>
+          <h3>Windows 11 mars 2026 : plein de nouveautés</h3>
+          <p>Microsoft pousse une grosse mise à jour en mars 2026 avec un menu Démarrer repensé, des emojis Unicode 16 et Copilot amélioré.</p>
+          <span class="card-link">Lire l'article →</span>
+        </div>
+      </div>
+
+      <div class="blog-card" onclick="openBlogModal('b4')">
+        <div class="blog-card-body">
+          <div class="card-tag">📱 Android</div>
+          <h3>Android 16 : ce qui change pour vous</h3>
+          <p>Android 16 débarque avec des NPU IA dans chaque appareil, Quick Share compatible AirDrop et bien plus encore.</p>
+          <span class="card-link">Lire l'article →</span>
+        </div>
+      </div>
+
+      <div class="blog-card" onclick="openBlogModal('b5')">
+        <div class="blog-card-body">
+          <div class="card-tag">📱 iPhone Fold</div>
+          <h3>iPhone Fold : Apple entre dans les pliables</h3>
+          <p>L'iPhone Fold est annoncé pour 2026 avec un écran sans pli visible et un capteur frontal sous l'écran. Du jamais vu chez Apple !</p>
+          <span class="card-link">Lire l'article →</span>
+        </div>
+      </div>
+
+      <div class="blog-card" onclick="openBlogModal('b6')">
+        <div class="blog-card-body">
+          <div class="card-tag">🥚 Easter Eggs</div>
+          <h3>Les anciens Easter Eggs de Google</h3>
+          <p>Tous les easter eggs cachés de Google qui ont été retirés. Une liste incroyable à découvrir !</p>
+          <a href="https://elgoog.im/" class="card-link" target="_blank" onclick="event.stopPropagation()">Voir le site →</a>
+        </div>
+      </div>
+
+      <div class="blog-card" onclick="openBlogModal('b7')">
+        <div class="blog-card-body">
+          <div class="card-tag">😂 Fun</div>
+          <h3>Essaye de ne pas rire</h3>
+          <p>Spécial sns__7 – Une sélection de vidéos pour tester votre sérieux. Bonne chance !</p>
+          <span class="card-link">Lire l'article →</span>
+        </div>
+      </div>
+
+      <div class="blog-card" onclick="openBlogModal('b8')">
+        <div class="blog-card-body">
+          <div class="card-tag">🎮 Gaming</div>
+          <h3>Map XP Fortnite — glitch niveau facile</h3>
+          <p>Regarde ce glitch XP dans Fortnite pour monter facilement en niveaux et débloquer tous les skins !</p>
+          <span class="card-link">Lire l'article →</span>
+        </div>
+      </div>
+
+      <div class="blog-card" onclick="openBlogModal('b9')">
+        <div class="blog-card-body">
+          <div class="card-tag">💰 Astuce</div>
+          <h3>Comment avoir des Robux gratuits (no fake)</h3>
+          <p>Allez sur rewards.bing.com, faites des quiz, accumulez des points et échangez contre des cartes cadeaux Xbox !</p>
+          <span class="card-link">Lire l'article →</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- BLOG MODAL -->
+  <div id="blogModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:500;backdrop-filter:blur(8px);overflow-y:auto;padding:2rem 1rem" onclick="closeBlogModal(event)">
+    <div id="blogModalContent" style="background:var(--surface);border:1px solid var(--border);border-radius:20px;max-width:680px;margin:2rem auto;padding:2.5rem;position:relative">
+      <button onclick="document.getElementById('blogModal').style.display='none'" style="position:absolute;top:1.25rem;right:1.25rem;background:var(--surface2);border:1px solid var(--border);color:var(--text);width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center">✕</button>
+      <div id="blogModalBody"></div>
+    </div>
+  </div>
+
+  <!-- ALERTES TECH -->
+  <div class="section">
+    <p class="section-title">🔔 <span>Alertes</span> & Infos Tech — Mars 2026</p>
+    <div class="section-divider"></div>
+    <div style="display:flex;flex-direction:column;gap:1rem">
+
+      <div class="alert-band" style="border-color:rgba(252,92,160,0.4)">
+        <span class="icon">🍎</span>
+        <div>
+          <strong>Apple Event mars 2026 — Énorme !</strong>
+          <p>Apple vient d'annoncer le <strong>MacBook Neo à 599$</strong>, un iPad Air M4, le <strong>MacBook Air M5</strong>, le MacBook Pro M5 et l'<strong>iPhone 17e</strong>. L'Apple Experience du 4 mars a tout dévoilé d'un coup !</p>
+        </div>
+      </div>
+
+      <div class="alert-band" style="border-color:rgba(92,244,252,0.4)">
+        <span class="icon">🤖</span>
+        <div>
+          <strong>Samsung Galaxy S26 Ultra — Prise en main</strong>
+          <p>Le <strong>Galaxy S26 Ultra</strong> est officiel avec un design affiné à 7,9 mm, Galaxy AI boosté, Wi-Fi 7, Bluetooth 6.0 et <strong>7 ans de mises à jour</strong>. La référence Android 2026.</p>
+        </div>
+      </div>
+
+      <div class="alert-band">
+        <span class="icon">🪟</span>
+        <div>
+          <strong>Windows 11 — Mise à jour mars 2026 (KB5079473)</strong>
+          <p>Microsoft déploie le <strong>Patch Tuesday mars 2026</strong> avec un menu Démarrer repensé, les emojis <strong>Unicode 16.0</strong>, une nouvelle icône de batterie, et Copilot bien amélioré.</p>
+        </div>
+      </div>
+
+      <div class="alert-band" style="border-color:rgba(92,244,252,0.3)">
+        <span class="icon">📱</span>
+        <div>
+          <strong>Samsung Galaxy Z Fold 8 — Premiers visuels</strong>
+          <p>Les premières images du <strong>Galaxy Z Fold 8</strong> ont fuité ! Samsung semble prêt à passer son pliable dans une autre dimension avec un écran sans pli visible, hérité du CES 2026.</p>
+        </div>
+      </div>
+
+      <div class="alert-band">
+        <span class="icon">📲</span>
+        <div>
+          <strong>Google Pixel 10 — Tensor G5 + PixelSnap</strong>
+          <p>Le <strong>Pixel 10</strong> arrive avec le processeur <strong>Tensor G5</strong>, 12 Go de RAM, une batterie de 4 970 mAh et la technologie <strong>PixelSnap</strong> (similaire au MagSafe d'Apple). 7 ans de MAJ garanties.</p>
+        </div>
+      </div>
+
+      <div class="alert-band" style="border-color:rgba(252,92,160,0.3)">
+        <span class="icon">📱</span>
+        <div>
+          <strong>iPhone 18 & iPhone Fold — Attendus en septembre 2026</strong>
+          <p>L'<strong>iPhone 18</strong> arrivera en septembre avec la puce A19 et une IA encore plus avancée. Et l'<strong>iPhone Fold</strong> pourrait marquer l'entrée d'Apple dans les pliables avec un écran sans pli et Face ID sous l'écran !</p>
+        </div>
+      </div>
+
+      <div class="alert-band">
+        <span class="icon">🤖</span>
+        <div>
+          <strong>IA partout en 2026 — Samsung vise 800 millions d'appareils</strong>
+          <p>Samsung veut mettre <strong>Gemini AI</strong> sur 800 millions d'appareils d'ici fin 2026. AMD et Qualcomm mettent un <strong>NPU IA</strong> dans chaque nouveau smartphone et PC.</p>
+        </div>
+      </div>
+
+      <div class="alert-band" style="border-color:rgba(124,92,252,0.4)">
+        <span class="icon">🌍</span>
+        <div>
+          <strong>Alerte planète 🌱</strong>
+          <p>La planète est en état critique. Ne plus jeter de déchets par terre — ni mégots, ni papier, ni plastique. Aidez à la préserver maintenant !</p>
+        </div>
+      </div>
+
+      <div class="alert-band">
+        <span class="icon">🎮</span>
+        <div>
+          <strong>Jeux gratuits à ne pas manquer :</strong>
+          <p>✅ Roblox – Pet Simulator X &nbsp;✅ Stumble Guys &nbsp;✅ Brawl Stars &nbsp;✅ Among Us &nbsp;✅ Subway Surfers</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="section">
+    <p class="section-title">📱 <span>Réseaux sociaux</span></p>
+    <div class="section-divider"></div>
+    <div class="social-grid">
+      <a href="https://facebook.com/Mathias sageot" class="social-btn" target="_blank">📘 Facebook</a>
+      <a href="https://youtube.com/Mathious1006" class="social-btn" target="_blank">▶️ YouTube</a>
+      <a href="https://tiktok.com/@ms_club_non_officiel" class="social-btn" target="_blank">🎵 TikTok</a>
+      <a href="https://x.com/MathiasSag4791" class="social-btn" target="_blank">🐦 X (Twitter)</a>
+      <a href="https://instagram.com/0_0mathious10060_0" class="social-btn" target="_blank">📸 Instagram</a>
+      <a href="https://api.whatsapp.com/send?phone=33748777627" class="social-btn" target="_blank">💬 WhatsApp</a>
+      <a href="https://t.me/+DPgrnnhdIG1iYWZk" class="social-btn" target="_blank">✈️ Telegram (membres)</a>
+    </div>
+    <div style="margin-top:1.5rem">
+      <a href="mailto:ms.club.plus.off@gmail.com" class="btn btn-ghost">📧 Envoyer un e-mail</a>
+    </div>
+  </div>
+
+  <div class="important-notice">
+    <h2>📢 MESSAGE IMPORTANT</h2>
+    <p>Le site a été entièrement refait, sans Webador, et est maintenant disponible directement. Merci de votre soutien !</p>
+  </div>
+
+  <!-- COMMENTAIRES -->
+  <div class="comments-section" style="margin: 2rem auto; max-width: 700px;">
+    <p class="section-title">💬 <span>Commentaires</span></p>
+    <div class="section-divider"></div>
+    <div id="commentsList">
+      <div class="comment">
+        <div class="comment-author">test</div>
+        <div class="comment-meta">il y a 9 mois</div>
+        <div class="comment-text">test</div>
+      </div>
+      <div class="comment">
+        <div class="comment-author">Michel Fontaine</div>
+        <div class="comment-meta">il y a 9 mois</div>
+        <div class="comment-text">Il est trop bien</div>
+      </div>
+      <div class="comment">
+        <div class="comment-author">MS-Club+</div>
+        <div class="comment-meta">il y a 9 mois</div>
+        <div class="comment-text">Merci 😁</div>
+      </div>
+    </div>
+    <div style="margin-top:2rem">
+      <h3 style="font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:1rem">Ajouter un commentaire</h3>
+      <div class="comment-form">
+        <div class="form-row">
+          <input type="text" class="form-input" placeholder="Votre nom *" id="cName">
+          <input type="email" class="form-input" placeholder="Adresse e-mail *" id="cEmail">
+        </div>
+        <textarea class="form-input" placeholder="Votre message *" id="cMsg"></textarea>
+        <button class="btn btn-primary" onclick="submitComment()" style="align-self:flex-start">Envoyer le commentaire</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════ PAGE: APPLICATION ═══════════════════════ -->
+<div class="page" id="page-app">
+  <div class="app-hero">
+    <div>
+      <div class="app-icon">💬</div>
+      <h1 class="app-title">MS-Chat+</h1>
+      <p style="color:var(--muted);font-size:0.95rem;max-width:380px">Notre messagerie gratuite — la version MS-Club+ de Snapchat. Envoyez des messages, partagez des moments !</p>
+      <ul class="feature-list">
+        <li>Messagerie instantanée gratuite</li>
+        <li>Sans publicité</li>
+        <li>Facile à utiliser</li>
+        <li>Rejoignez la communauté</li>
+      </ul>
+      <a href="http://www.appcreator24.com/app3103523-xceqi6" class="btn btn-primary" target="_blank" style="margin-top:0.5rem">📲 Télécharger MS-Chat+</a>
+    </div>
+    <div>
+      <div class="app-mockup">
+        <div class="mock-header">💬 MS-Chat+</div>
+        <div class="mock-msg recv">Salut, t'as vu la nouvelle update ?</div>
+        <div class="mock-msg sent">Oui c'est ouf !!</div>
+        <div class="mock-msg recv">T'as testé le nouveau mode ?</div>
+        <div class="mock-msg sent">Pas encore, je le fais ce soir 🔥</div>
+        <div class="mock-msg recv">Ok dis-moi ce que t'en penses</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <p class="section-title">✨ <span>Fonctionnalités</span></p>
+    <div class="section-divider"></div>
+    <div class="cards-grid">
+      <div class="card">
+        <div class="card-tag">💬 Messagerie</div>
+        <h3>Messages instantanés</h3>
+        <p>Envoyez et recevez des messages en temps réel avec vos amis de la communauté MS-Club+.</p>
+      </div>
+      <div class="card">
+        <div class="card-tag">🆓 Gratuit</div>
+        <h3>100% gratuit</h3>
+        <p>MS-Chat+ est entièrement gratuit, sans abonnement caché. Notre objectif : zéro pub.</p>
+      </div>
+      <div class="card">
+        <div class="card-tag">👥 Communauté</div>
+        <h3>Rejoignez la communauté</h3>
+        <p>Des milliers de membres actifs. Partagez, échangez, et amusez-vous ensemble.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ PAGE: MUSIQUE ═══════════════════════ -->
+<div class="page" id="page-musique">
+  <div class="section">
+    <p class="section-title">🎵 <span>Musique</span></p>
+    <div class="section-divider"></div>
+  </div>
+
+  <div class="music-player" id="player">
+    <div class="player-cover" id="playerCover">🎵</div>
+    <div class="player-title" id="playerTitle">Sélectionnez un titre</div>
+    <div class="player-artist" id="playerArtist">MS-Club+ Music</div>
+    <div class="player-progress" id="progressBar" onclick="seekTrack(event)">
+      <div class="player-progress-bar" id="progressFill" style="width:0%"></div>
+    </div>
+    <div class="player-times">
+      <span id="currentTime">0:00</span>
+      <span id="totalTime">0:00</span>
+    </div>
+    <div class="player-controls">
+      <button class="ctrl-btn" onclick="prevTrack()" title="Précédent">⏮</button>
+      <button class="ctrl-play" id="playBtn" onclick="togglePlay()">▶</button>
+      <button class="ctrl-btn" onclick="nextTrack()" title="Suivant">⏭</button>
+    </div>
+  </div>
+
+  <div class="music-grid" id="trackList"></div>
+</div>
+
+<!-- ═══════════════════════ PAGE: JEUX ═══════════════════════ -->
+<div class="page" id="page-jeux">
+  <div class="section">
+    <p class="section-title">🎮 <span>Jeux</span></p>
+    <div class="section-divider"></div>
+    <div class="games-grid">
+      <div class="game-card" onclick="window.open('https://www.roblox.com','_blank')">
+        <div class="game-thumb" style="background:linear-gradient(135deg,#1a1a40,#2d1b69)">🟥</div>
+        <div class="game-info">
+          <h3>Roblox</h3>
+          <p>Rejoins mathious1006 et mathious1006_du76 sur Roblox !</p>
+          <span class="game-tag">Gratuit</span>
+        </div>
+      </div>
+      <div class="game-card" onclick="window.open('https://stumble-guys.com','_blank')">
+        <div class="game-thumb" style="background:linear-gradient(135deg,#1a0d30,#4a1b8a)">🏃</div>
+        <div class="game-info">
+          <h3>Stumble Guys</h3>
+          <p>Battle royale festif avec jusqu'à 32 joueurs.</p>
+          <span class="game-tag">Gratuit</span>
+        </div>
+      </div>
+      <div class="game-card" onclick="window.open('https://brawlstars.com','_blank')">
+        <div class="game-thumb" style="background:linear-gradient(135deg,#0d1a2e,#1b3a6e)">⭐</div>
+        <div class="game-info">
+          <h3>Brawl Stars</h3>
+          <p>Des batailles rapides et fun en multijoueur.</p>
+          <span class="game-tag">Gratuit</span>
+        </div>
+      </div>
+      <div class="game-card" onclick="window.open('https://www.innersloth.com/games/among-us/','_blank')">
+        <div class="game-thumb" style="background:linear-gradient(135deg,#0a1a0a,#1a3a1a)">🚀</div>
+        <div class="game-info">
+          <h3>Among Us</h3>
+          <p>Trouve l'imposteur avant qu'il soit trop tard !</p>
+          <span class="game-tag">Gratuit</span>
+        </div>
+      </div>
+      <div class="game-card" onclick="window.open('https://subwaysurfers.com','_blank')">
+        <div class="game-thumb" style="background:linear-gradient(135deg,#1a0a0a,#3a1a0a)">🏄</div>
+        <div class="game-info">
+          <h3>Subway Surfers</h3>
+          <p>Le classique du runner mobile, intemporel.</p>
+          <span class="game-tag">Gratuit</span>
+        </div>
+      </div>
+      <div class="game-card" onclick="window.open('https://fortnite.com','_blank')">
+        <div class="game-thumb" style="background:linear-gradient(135deg,#001a33,#003366)">⛏️</div>
+        <div class="game-info">
+          <h3>Fortnite</h3>
+          <p>Battle Royale incontournable. Map XP glitch inside !</p>
+          <span class="game-tag">Gratuit</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ PAGE: NOUVEAUTÉS ═══════════════════════ -->
+<div class="page" id="page-news">
+  <div class="section">
+    <p class="section-title">📰 <span>Nouveautés</span> Tech — Mars 2026</p>
+    <div class="section-divider"></div>
+    <div class="news-feed">
+
+      <div class="news-item">
+        <div class="news-meta">
+          <span class="news-date">4 mars 2026</span>
+          <span class="news-cat cat-tech">Apple</span>
+        </div>
+        <h3>🍎 Apple Event — MacBook Neo, iPhone 17e, MacBook Air M5</h3>
+        <p>Apple a sorti une avalanche de produits : <strong>MacBook Neo à 599$</strong>, iPad Air M4, iPhone 17e, MacBook Air M5 et MacBook Pro M5. L'Apple Experience de mars 2026 est l'un des plus grands événements produits d'Apple depuis des années.</p>
+      </div>
+
+      <div class="news-item">
+        <div class="news-meta">
+          <span class="news-date">Mars 2026</span>
+          <span class="news-cat cat-tech">Samsung</span>
+        </div>
+        <h3>🤖 Galaxy S26 Ultra — La référence Android est là</h3>
+        <p>Le <strong>Galaxy S26 Ultra</strong> est arrivé avec un design encore plus fin (7,9 mm), Galaxy AI au maximum, Wi-Fi 7, Bluetooth 6.0 et surtout <strong>7 ans de mises à jour</strong>. La prise en main fait déjà l'unanimité dans la presse tech.</p>
+      </div>
+
+      <div class="news-item">
+        <div class="news-meta">
+          <span class="news-date">22 mars 2026</span>
+          <span class="news-cat cat-tech">Windows</span>
+        </div>
+        <h3>🪟 Windows 11 — Patch Tuesday mars 2026 (KB5079473)</h3>
+        <p>Microsoft a poussé une grosse mise à jour avec un <strong>menu Démarrer repensé</strong>, les emojis Unicode 16.0, une nouvelle icône batterie et des préparatifs pour le renouvellement des certificats Secure Boot prévu en juin 2026.</p>
+      </div>
+
+      <div class="news-item">
+        <div class="news-meta">
+          <span class="news-date">Mars 2026</span>
+          <span class="news-cat cat-tech">Android</span>
+        </div>
+        <h3>📱 Quick Share bientôt compatible avec AirDrop</h3>
+        <p>C'est officiel : <strong>Quick Share (Android) va devenir interopérable avec AirDrop (Apple)</strong>. Finis les galères pour partager des fichiers entre un iPhone et un Android ! Le déploiement arrive sur de nouveaux appareils.</p>
+      </div>
+
+      <div class="news-item">
+        <div class="news-meta">
+          <span class="news-date">Mars 2026</span>
+          <span class="news-cat cat-tech">Google</span>
+        </div>
+        <h3>📲 Google Pixel Drop mars 2026 — Gemini partout</h3>
+        <p>Google lance son <strong>Pixel Drop de mars 2026</strong> avec Gemini au centre de l'expérience. Le Pixel 10 avec Tensor G5 et PixelSnap (comme le MagSafe) est désormais disponible à l'achat.</p>
+      </div>
+
+      <div class="news-item">
+        <div class="news-meta">
+          <span class="news-date">Fuites</span>
+          <span class="news-cat cat-tech">Samsung</span>
+        </div>
+        <h3>📸 Galaxy Z Fold 8 — Premiers visuels et fiche technique</h3>
+        <p>Les premières images du <strong>Galaxy Z Fold 8</strong> ont fuité ! Samsung semble vouloir intégrer l'écran OLED sans pli dévoilé au CES 2026. Le capteur principal serait de <strong>200 MP</strong> pour seulement 3,9 mm d'épaisseur déplié.</p>
+      </div>
+
+      <div class="news-item">
+        <div class="news-meta">
+          <span class="news-date">Attendu sept. 2026</span>
+          <span class="news-cat cat-tech">Apple</span>
+        </div>
+        <h3>📱 iPhone Fold & iPhone 18 — Ce qu'on sait déjà</h3>
+        <p>L'<strong>iPhone 18</strong> arriverait en septembre 2026 avec la puce A19 et une IA encore plus avancée. L'<strong>iPhone Fold</strong> pourrait être lancé en même temps avec un écran sans pli visible et un capteur frontal sous l'écran — une première !</p>
+      </div>
+
+      <div class="news-item">
+        <div class="news-meta">
+          <span class="news-date">26 mars 2026</span>
+          <span class="news-cat cat-tech">Samsung</span>
+        </div>
+        <h3>📱 Galaxy A57 & A37 5G — IA et 6 ans de mises à jour</h3>
+        <p>Samsung monte en gamme sur le milieu de gamme : les <strong>Galaxy A57 et A37 5G</strong> embarquent des fonctionnalités IA et promettent <strong>6 ans de mises à jour</strong>. Une vraie revolution pour les smartphones abordables.</p>
+      </div>
+
+      <div class="news-item">
+        <div class="news-meta">
+          <span class="news-date">2026</span>
+          <span class="news-cat cat-app">IA</span>
+        </div>
+        <h3>🤖 Samsung vise 800 millions d'appareils avec Gemini AI</h3>
+        <p>Samsung a un objectif titanesque : intégrer <strong>Gemini AI</strong> sur 800 millions d'appareils d'ici fin 2026. L'IA embarquée devient le nouveau standard pour tous les appareils mobiles.</p>
+      </div>
+
+      <div class="news-item">
+        <div class="news-meta">
+          <span class="news-date">Mars 2026</span>
+          <span class="news-cat cat-app">MS-Club+</span>
+        </div>
+        <h3>🎉 Le site MS-Club+ refait sans Webador !</h3>
+        <p>Comme promis, le site MS-Club+ est maintenant entièrement indépendant de Webador. Plus rapide, plus moderne, 100% gratuit et bientôt hébergé sur GitHub Pages !</p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ PAGE: BETA ═══════════════════════ -->
+<div class="page" id="page-beta">
+  <div class="beta-hero">
+    <div class="beta-badge">🔬 BETA</div>
+    <h1 style="font-family:'Syne',sans-serif;font-size:clamp(2.5rem,7vw,5rem);font-weight:800;letter-spacing:-2px;margin-bottom:1rem">À suivre...</h1>
+    <p style="color:var(--muted);max-width:500px;margin:0 auto;font-size:1rem">Voici ce que nous préparons en coulisses. Rien n'est encore sorti, mais ça arrive !</p>
+  </div>
+  <div class="beta-grid">
+    <div class="beta-card">
+      <div class="beta-icon">📱</div>
+      <h3>Nouvelles applications</h3>
+      <p>Des apps gratuites et sans pub sont en cours de développement. Rejoignez Telegram pour être alerté en premier !</p>
+    </div>
+    <div class="beta-card">
+      <div class="beta-icon">🎵</div>
+      <h3>Plateforme musicale</h3>
+      <p>Une section musique complète avec des playlists communautaires et des découvertes hebdomadaires.</p>
+    </div>
+    <div class="beta-card">
+      <div class="beta-icon">🎮</div>
+      <h3>Tournois de jeux</h3>
+      <p>Des tournois communautaires sur Roblox, Fortnite, Brawl Stars et plus. Préparez-vous !</p>
+    </div>
+    <div class="beta-card">
+      <div class="beta-icon">🌐</div>
+      <h3>Version améliorée du site</h3>
+      <p>Nouvelles pages, nouveau design, nouvelles fonctionnalités. Proposez vos idées sur Telegram !</p>
+    </div>
+    <div class="beta-card">
+      <div class="beta-icon">💬</div>
+      <h3>Forum communautaire</h3>
+      <p>Un espace pour discuter, partager vos astuces de jeux, vos musiques préférées et plus.</p>
+    </div>
+    <div class="beta-card">
+      <div class="beta-icon">🏆</div>
+      <h3>Système de points</h3>
+      <p>Gagnez des points en participant à la communauté et échangez-les contre des récompenses.</p>
+    </div>
+  </div>
+  <div style="text-align:center;padding:0 2rem 3rem">
+    <p style="color:var(--muted);margin-bottom:1.5rem">Tu veux proposer une idée ?</p>
+    <a href="https://t.me/+DPgrnnhdIG1iYWZk" class="btn btn-primary" target="_blank">✈️ Rejoindre Telegram</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="logo">MS-Club+</div>
+      <p>Votre univers 100% fun, détente et découvertes. Rejoignez la communauté, explorez, amusez-vous et vivez le divertissement autrement.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Navigation</h4>
+      <ul>
+        <li><a href="#" onclick="navigate('accueil')">Accueil</a></li>
+        <li><a href="#" onclick="navigate('app')">Application</a></li>
+        <li><a href="#" onclick="navigate('musique')">Musique</a></li>
+        <li><a href="#" onclick="navigate('jeux')">Jeux</a></li>
+        <li><a href="#" onclick="navigate('news')">Nouveautés</a></li>
+        <li><a href="#" onclick="navigate('beta')">BETA</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="mailto:ms.club.plus.off@gmail.com">📧 E-mail</a></li>
+        <li><a href="https://t.me/+DPgrnnhdIG1iYWZk" target="_blank">✈️ Telegram</a></li>
+        <li><a href="https://youtube.com/Mathious1006" target="_blank">▶️ YouTube</a></li>
+        <li><a href="https://tiktok.com/@ms_club_non_officiel" target="_blank">🎵 TikTok</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>©2022–2026 MS-Club+ — Bien plus qu'une plateforme</span>
+    <span style="color:var(--accent)">Made with ❤️ — 100% indépendant</span>
+  </div>
+</footer>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ─── BLOG ARTICLES ───
+const blogArticles = {
+  b1: {
+    tag:'🍎 Apple', title:'iPhone 17 : le 120Hz enfin pour tous !',
+    date:'Septembre 2025',
+    body:`<p>Après des années d'attente, <strong>Apple a enfin intégré la technologie ProMotion 1-120 Hz sur l'iPhone 17 standard</strong>, une fonctionnalité jusque-là réservée aux modèles Pro. Le résultat ? Un écran ultra-fluide qui s'adapte en temps réel selon le contenu affiché, tout en préservant la batterie.</p>
+    <p style="margin-top:1rem">L'iPhone 17 tourne sur la puce <strong>Apple A19</strong> avec 8 Go de RAM et jusqu'à 512 Go de stockage. Côté photo, le module arrière a été revu avec des capteurs alignés verticalement dans un bloc sobre et intégré.</p>
+    <p style="margin-top:1rem">En résumé, l'iPhone 17 standard comble enfin l'écart avec les modèles Pro sur l'affichage. Un achat vraiment justifié cette année !</p>`
+  },
+  b2: {
+    tag:'🤖 Samsung', title:'Galaxy S26 Ultra : la révolution Galaxy AI',
+    date:'Mars 2026',
+    body:`<p>Le <strong>Samsung Galaxy S26 Ultra</strong> est officiel et il impressionne. Design affiné à seulement <strong>7,9 mm</strong> d'épaisseur avec un châssis en Armor Aluminium et des coins plus arrondis que son prédécesseur. Il est disponible en violet, bleu, noir, blanc, argent et or rose.</p>
+    <p style="margin-top:1rem">Côté technologie : <strong>Wi-Fi 7, Bluetooth 6.0, NFC, UWB</strong>, lecteur d'empreintes sous l'écran, et surtout <strong>Galaxy AI</strong> poussé à son maximum. Samsung promet également <strong>7 ans de mises à jour</strong> Android et de sécurité.</p>
+    <p style="margin-top:1rem">Le S Pen est toujours là, amélioré. C'est sans aucun doute la référence Android de 2026.</p>`
+  },
+  b3: {
+    tag:'🪟 Windows', title:'Windows 11 — Mise à jour mars 2026',
+    date:'Mars 2026',
+    body:`<p>Microsoft déploie le <strong>Patch Tuesday de mars 2026</strong> (KB5079473, build 26200.8037) pour Windows 11. Au programme : des changements visuels et ergonomiques majeurs.</p>
+    <ul style="margin:1rem 0;padding-left:1.5rem;color:var(--muted);display:flex;flex-direction:column;gap:0.5rem">
+      <li>🎨 <strong>Nouveau menu Démarrer</strong> repensé, déployé progressivement</li>
+      <li>😀 <strong>Emojis Unicode 16.0</strong> — cohérence avec iOS et Android enfin atteinte</li>
+      <li>🔋 <strong>Nouvelle icône de batterie</strong> plus lisible sur les PC portables</li>
+      <li>🔒 Préparation des <strong>certificats Secure Boot</strong> avant expiration en juin 2026</li>
+      <li>🤖 <strong>Copilot</strong> encore plus intégré à l'interface</li>
+    </ul>
+    <p>Microsoft met clairement l'accent sur l'expérience utilisateur plutôt que sur l'ajout de fonctionnalités gadgets. Une bonne direction !</p>`
+  },
+  b4: {
+    tag:'📱 Android', title:'Android 16 : tout ce qui change pour vous',
+    date:'2026',
+    body:`<p><strong>Android 16</strong> arrive et c'est une grosse mise à jour. Samsung, Qualcomm et AMD intègrent désormais un <strong>NPU IA dédié</strong> dans chaque nouvel appareil, permettant des traitements d'intelligence artificielle directement sur le téléphone, sans connexion cloud.</p>
+    <p style="margin-top:1rem">Parmi les nouveautés marquantes : <strong>Quick Share désormais compatible avec AirDrop d'Apple</strong> — les transferts de fichiers entre Android et iPhone deviennent enfin simples !</p>
+    <p style="margin-top:1rem">Samsung prévoit de déployer <strong>One UI 8 basé sur Android 16</strong> dès fin juillet–début août, ce qui est impressionnant de rapidité. Les Galaxy S26 bénéficient évidemment des mises à jour mensuelles de sécurité.</p>`
+  },
+  b5: {
+    tag:'📱 iPhone Fold', title:"iPhone Fold : Apple entre enfin dans les pliables",
+    date:'2026',
+    body:`<p>C'est la rumeur la plus excitante de 2026 : <strong>Apple prépare son premier iPhone pliable</strong>. Et ce n'est pas un simple copié-collé des Galaxy Z Fold — Apple vise quelque chose de radicalement différent.</p>
+    <ul style="margin:1rem 0;padding-left:1.5rem;color:var(--muted);display:flex;flex-direction:column;gap:0.5rem">
+      <li>📺 Écran pliable entre <strong>7,6 et 7,9 pouces</strong> déplié, ~5,5 pouces refermé</li>
+      <li>✨ <strong>Aucun pli visible</strong> grâce à l'écran OLED de Samsung Display</li>
+      <li>📸 Capteur frontal <strong>sous l'écran</strong> (une première chez Apple)</li>
+      <li>🔓 Potentiellement <strong>sans Face ID</strong> en facade pour un design bord à bord total</li>
+    </ul>
+    <p>Sortie attendue en septembre 2026 en même temps que l'iPhone 18 Pro. Le prix s'annonce... élevé.</p>`
+  },
+  b6: {
+    tag:'🥚 Easter Eggs', title:'Les anciens Easter Eggs de Google cachés',
+    date:'Permanent',
+    body:`<p>Google a toujours adoré cacher des surprises dans ses produits. Des dizaines d'easter eggs ont existé au fil des années avant d'être retirés silencieusement.</p>
+    <p style="margin-top:1rem">Parmi les plus célèbres : le jeu de dinosaure hors-ligne dans Chrome, "Do a barrel roll" dans la recherche, Zerg Rush, le jeu Snake dans Maps, et même un niveau de Breakout caché dans Google Images.</p>
+    <p style="margin-top:1rem">Un site archive tous ces easter eggs disparus : <a href="https://elgoog.im/" target="_blank" style="color:var(--accent)">elgoog.im</a> — allez y faire un tour, c'est fascinant !</p>`
+  },
+  b7: {
+    tag:'😂 Fun', title:'Essaye de ne pas rire — Spécial sns__7',
+    date:'Fun',
+    body:`<p>Défi accepté ? Voici notre sélection de moments improbables, de glitches de jeux vidéo, de chutes mémorables et de répliques légendaires compilés spécialement pour sns__7.</p>
+    <p style="margin-top:1rem">La règle est simple : si tu ris, tu perds. Si tu ne ris pas, t'as aucun humour. Dans les deux cas tu perds. 😅</p>
+    <p style="margin-top:1rem">Rejoins le <a href="https://t.me/+DPgrnnhdIG1iYWZk" target="_blank" style="color:var(--accent)">Telegram MS-Club+</a> pour partager tes propres vidéos marrantes avec la communauté !</p>`
+  },
+  b8: {
+    tag:'🎮 Gaming', title:'Map XP Fortnite — Monte en niveau facilement',
+    date:'Gaming',
+    body:`<p>Tu galéres à monter de niveau sur Fortnite ? Il existe des maps XP créatives qui permettent d'accumuler des points d'expérience beaucoup plus vite qu'en jouant normalement.</p>
+    <p style="margin-top:1rem">Le principe : certaines maps en mode Créatif contiennent des objets à ramasser qui génèrent de l'XP en boucle. En quelques heures, tu peux monter plusieurs dizaines de niveaux et débloquer des skins de la passe de combat sans jouer des centaines de parties !</p>
+    <p style="margin-top:1rem">⚠️ Attention : Epic Games supprime régulièrement ces maps. Profites-en pendant que ça marche !</p>`
+  },
+  b9: {
+    tag:'💰 Astuce', title:'Robux gratuits via Microsoft Rewards (no fake)',
+    date:'Astuce',
+    body:`<p>Tu veux des Robux sur Roblox sans dépenser d'argent ? Voici une méthode 100% légale et gratuite :</p>
+    <ol style="margin:1rem 0;padding-left:1.5rem;color:var(--muted);display:flex;flex-direction:column;gap:0.5rem">
+      <li>1. Vas sur <a href="https://rewards.bing.com/" target="_blank" style="color:var(--accent)">rewards.bing.com</a></li>
+      <li>2. Connecte-toi avec ton compte Microsoft</li>
+      <li>3. Fais des recherches sur Bing, des quiz et des défis quotidiens</li>
+      <li>4. Accumule des points (environ 10-15 min par jour suffit)</li>
+      <li>5. Échange-les contre des <strong>cartes cadeaux Xbox/Microsoft</strong></li>
+      <li>6. Utilise la carte cadeau pour acheter des Robux dans Roblox !</li>
+    </ol>
+    <p>Pas de hack, pas de générateur bidon. Juste du bon sens et de la régularité. 💪</p>`
+  },
+};
+
+function openBlogModal(id) {
+  const art = blogArticles[id];
+  if (!art) return;
+  document.getElementById('blogModalBody').innerHTML = `
+    <div style="font-size:0.78rem;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--accent);margin-bottom:0.5rem">${art.tag} · ${art.date}</div>
+    <h2 style="font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;letter-spacing:-0.5px;margin-bottom:1.5rem;line-height:1.3">${art.title}</h2>
+    <div style="color:var(--muted);line-height:1.7;font-size:0.95rem">${art.body}</div>
+  `;
+  document.getElementById('blogModal').style.display = 'block';
+}
+
+function closeBlogModal(e) {
+  if (e.target === document.getElementById('blogModal')) {
+    document.getElementById('blogModal').style.display = 'none';
+  }
+}
+
+// ─── NAVIGATION ───
+const pages = ['accueil','app','musique','jeux','news','beta'];
+
+function navigate(id) {
+  pages.forEach(p => {
+    document.getElementById('page-'+p).classList.remove('active');
+  });
+  document.getElementById('page-'+id).classList.add('active');
+
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+  document.querySelectorAll('.mobile-menu a').forEach(a => {
+    if (a.getAttribute('onclick') && a.getAttribute('onclick').includes("'"+id+"'"))
+      a.style.color = 'var(--accent)';
+    else a.style.color = '';
+  });
+
+  closeMobileMenu();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ─── MOBILE MENU ───
+function toggleMenu() {
+  document.getElementById('mobileMenu').classList.toggle('open');
+}
+function closeMobileMenu() {
+  document.getElementById('mobileMenu').classList.remove('open');
+}
+
+// ─── TOAST ───
+function showToast(msg, type='') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show ' + type;
+  setTimeout(() => t.className = 'toast', 2800);
+}
+
+// ─── RATING ───
+let hasVoted = false;
+let totalVotes = 58;
+let totalScore = 58 * 4.45;
+
+function vote(val) {
+  if (hasVoted) { showToast('Vous avez déjà voté !'); return; }
+  hasVoted = true;
+  totalVotes++;
+  totalScore += val;
+  const avg = (totalScore / totalVotes).toFixed(1);
+
+  document.getElementById('starsDisplay').textContent = '⭐'.repeat(Math.round(avg));
+  document.getElementById('ratingLabel').textContent = avg + ' / 5';
+  document.getElementById('voteCount').textContent = totalVotes + ' votes';
+  document.getElementById('voteMsg').textContent = '✓ Merci pour votre vote !';
+
+  document.querySelectorAll('.star-btn').forEach(b => {
+    b.classList.toggle('active', parseInt(b.dataset.v) <= val);
+  });
+  showToast('⭐ Vote enregistré ! Merci !', 'success');
+}
+
+document.querySelectorAll('.star-btn').forEach(btn => {
+  btn.addEventListener('mouseenter', () => {
+    const v = parseInt(btn.dataset.v);
+    document.querySelectorAll('.star-btn').forEach(b => {
+      b.style.color = parseInt(b.dataset.v) <= v ? '#fbbf24' : '';
+    });
+  });
+  btn.addEventListener('mouseleave', () => {
+    document.querySelectorAll('.star-btn').forEach(b => {
+      b.style.color = b.classList.contains('active') ? '#fbbf24' : '';
+    });
+  });
+});
+
+// ─── COMMENTS ───
+function submitComment() {
+  const name = document.getElementById('cName').value.trim();
+  const email = document.getElementById('cEmail').value.trim();
+  const msg = document.getElementById('cMsg').value.trim();
+
+  if (!name || !email || !msg) { showToast('⚠️ Veuillez remplir tous les champs.'); return; }
+  if (!email.includes('@')) { showToast('⚠️ Adresse e-mail invalide.'); return; }
+
+  const list = document.getElementById('commentsList');
+  const div = document.createElement('div');
+  div.className = 'comment';
+  div.innerHTML = `<div class="comment-author">${escapeHtml(name)}</div>
+    <div class="comment-meta">À l'instant</div>
+    <div class="comment-text">${escapeHtml(msg)}</div>`;
+  list.prepend(div);
+
+  document.getElementById('cName').value = '';
+  document.getElementById('cEmail').value = '';
+  document.getElementById('cMsg').value = '';
+  showToast('✅ Commentaire publié !', 'success');
+}
+
+function escapeHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ─── MUSIC PLAYER ───
+const tracks = [
+  { title:'Découverte du mois', artist:'MS-Club+ Radio', emoji:'🎵', duration:213 },
+  { title:'Vibes nocturnes', artist:'Lo-fi Beats', emoji:'🌙', duration:188 },
+  { title:'Summer Groove', artist:'MS Playlist', emoji:'☀️', duration:235 },
+  { title:'Chill Mode', artist:'Relaxation', emoji:'🎧', duration:197 },
+  { title:'Top Gaming OST', artist:'Game Sounds', emoji:'🎮', duration:256 },
+  { title:'French Rap Mix', artist:'FR Vibes', emoji:'🇫🇷', duration:221 },
+];
+
+let currentTrack = 0;
+let isPlaying = false;
+let progressInterval = null;
+let currentSec = 0;
+
+function renderTrackList() {
+  const el = document.getElementById('trackList');
+  el.innerHTML = tracks.map((t,i) => `
+    <div class="track-card" onclick="loadTrack(${i})">
+      <div class="track-cover" style="background:linear-gradient(135deg,var(--accent),var(--accent2))">${t.emoji}</div>
+      <div class="track-info">
+        <div class="track-name">${t.title}</div>
+        <div class="track-artist">${t.artist}</div>
+      </div>
+      <div style="margin-left:auto;color:var(--muted);font-size:0.82rem">${fmtTime(t.duration)}</div>
+    </div>`).join('');
+}
+
+function fmtTime(s) {
+  return Math.floor(s/60)+':'+(s%60).toString().padStart(2,'0');
+}
+
+function loadTrack(i) {
+  currentTrack = i;
+  currentSec = 0;
+  const t = tracks[i];
+  document.getElementById('playerTitle').textContent = t.title;
+  document.getElementById('playerArtist').textContent = t.artist;
+  document.getElementById('playerCover').textContent = t.emoji;
+  document.getElementById('totalTime').textContent = fmtTime(t.duration);
+  document.getElementById('progressFill').style.width = '0%';
+  document.getElementById('currentTime').textContent = '0:00';
+  startPlay();
+}
+
+function startPlay() {
+  isPlaying = true;
+  document.getElementById('playBtn').textContent = '⏸';
+  clearInterval(progressInterval);
+  progressInterval = setInterval(() => {
+    currentSec++;
+    const dur = tracks[currentTrack].duration;
+    if (currentSec >= dur) { nextTrack(); return; }
+    document.getElementById('progressFill').style.width = (currentSec/dur*100)+'%';
+    document.getElementById('currentTime').textContent = fmtTime(currentSec);
+  }, 1000);
+}
+
+function togglePlay() {
+  if (isPlaying) {
+    isPlaying = false;
+    clearInterval(progressInterval);
+    document.getElementById('playBtn').textContent = '▶';
+  } else {
+    if (!document.getElementById('playerTitle').textContent.includes('Sélectionnez')) {
+      startPlay();
+    } else {
+      loadTrack(0);
+    }
+  }
+}
+
+function nextTrack() { loadTrack((currentTrack+1) % tracks.length); }
+function prevTrack() { loadTrack((currentTrack-1+tracks.length) % tracks.length); }
+
+function seekTrack(e) {
+  const bar = document.getElementById('progressBar');
+  const ratio = e.offsetX / bar.offsetWidth;
+  currentSec = Math.floor(ratio * tracks[currentTrack].duration);
+  document.getElementById('progressFill').style.width = (ratio*100)+'%';
+  document.getElementById('currentTime').textContent = fmtTime(currentSec);
+}
+
+renderTrackList();
+</script>
+</body>
+</html>
